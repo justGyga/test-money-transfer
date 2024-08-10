@@ -15,6 +15,6 @@ export default class SwaggerDoc extends BaseModule {
     async handler(app) {
         const document = swaggerJSDoc(this.#config);
         app.use("/docs", SwaggerUI.serve, SwaggerUI.setup(document, { swaggerOptions: this.#options }));
-        console.log("[Swagger] swagger started");
+        console.log(`[Swagger] swagger started on\n\t${process.env.APP_HOST}/docs`);
     }
 }
