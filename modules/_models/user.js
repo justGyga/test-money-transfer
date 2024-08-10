@@ -32,6 +32,6 @@ export const userPlotter = (connection) => {
     return () => {
         User.hasMany(Transaction, { foreignKey: "to", as: "transactionsTo", onDelete: "CASCADE" });
         User.hasMany(Transaction, { foreignKey: "from", as: "transactionsFrom", onDelete: "CASCADE" });
-        User.belongsTo(Currency, { foreignKey: "currencyId", as: "user", onDelete: "CASCADE" });
+        User.belongsTo(Currency, { foreignKey: "currencyId", as: "currency", onDelete: "CASCADE" });
     };
 };
