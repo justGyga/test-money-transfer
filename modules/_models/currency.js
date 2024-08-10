@@ -12,10 +12,12 @@ export const currencyPlotter = (connection) => {
                 primaryKey: true
             },
             name: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                allowNull: false
             },
             code: {
-                type: DataTypes.SMALLINT
+                type: DataTypes.STRING,
+                allowNull: false
             }
         },
         { sequelize: connection, timestamps: false, tableName: "currencies" }
