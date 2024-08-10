@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import { Op } from "sequelize";
 import { TokenGuard } from "../_commons/middlewares/token-guard.js";
-import { Currency } from "../_models/currency";
+import { Currency } from "../_models/currency.js";
 import { User } from "../_models/user.js";
 
 class UserService {
@@ -9,7 +9,7 @@ class UserService {
         if (await User.count({ where: { login: { [Op.iLike]: doc.login } }, raw: true })) {
             return [false, false];
         }
-        doc.password = await argon2.hash(doc.password);
+        doc.password = await argon2.hash(`${doc.password}`);
         const isCurrencyExists = await Currency.count({ where: { id: doc.currencyId } });
         if (!isCurrencyExists) return [true, false];
         await User.create(doc);
@@ -18,22 +18,27 @@ class UserService {
 
     async auth(login, password) {
         const user = await User.findOne({ where: { login }, raw: true });
-        if (!user || !(await argon2.verify(user.password, password))) return false;
+        if (!user || !(await argon2.verify(user.password, `${password}`))) return false;
         return await TokenGuard.generate({ id: user.id });
     }
 
     async getUserById(id) {
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id, {
+            attributes: { exclude: ["password", "createdAt", "currencyId"] },
+            include: [{ model: Currency, as: "currency" }],
+            raw: true
+        });
         if (!user) return false;
         return user;
     }
 
-    async getUserList(startPosition, limitPosition, currency) {
+    async getUserList(startPosition, limitPosition, currency = []) {
         const currencyWhere = {};
-        if (currency) currencyWhere.name = currency;
+        if (currency.length) currencyWhere.id = { [Op.in]: currency };
         const users = await User.findAll({
             offset: startPosition * limitPosition,
             limit: limitPosition,
+            attributes: { exclude: ["password", "createdAt", "currencyId"] },
             include: [{ model: Currency, as: "currency", where: currencyWhere }],
             raw: true
         });

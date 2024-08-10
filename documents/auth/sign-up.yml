@@ -1,0 +1,39 @@
+/sign/up:
+  post:
+    tags:
+      - User / Sign
+    security: [ ]
+    summary: Registration in system
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [login, password, currencyId]
+            properties:
+              login:
+                type: string
+              password:
+                type: string
+              currencyId:
+                type: string
+                format: uuid
+    
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NGY1O1ODkwYyIsImlxNjk4NDc5MDg2fQ.nr1iX_rDrYwlS2mytMrU0KPZ3ndX4rEjheAPHd-w0
+      "401":
+        $ref: '#definitions/bad-request'
+      "404":
+        $ref: '#definitions/not-found'
+      "422":
+        $ref: '#definitions/validations'

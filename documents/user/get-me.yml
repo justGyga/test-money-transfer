@@ -1,0 +1,36 @@
+/user/me:
+  post:
+    tags:
+      - User
+    summary: Get user self data
+    
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                login:
+                  type: string
+                createdAt:
+                  type: string
+                  format: date-time
+                currency:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    code: 
+                      type: string
+      "404":
+        $ref: '#definitions/not-found'
+      "422":
+        $ref: '#definitions/validations'

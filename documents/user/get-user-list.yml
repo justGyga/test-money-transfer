@@ -1,0 +1,54 @@
+/user:
+  post:
+    tags:
+      - User
+    security: [ ]
+    summary: Get users list
+    parameters:
+      - $ref: '#definitions/startPosition'
+      - $ref: '#definitions/limitPosition'
+      - in: query
+        name: currencyIds
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+    
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: number
+                body:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      login:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      currency:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          name:
+                            type: string
+                          code: 
+                            type: string
+      "404":
+        $ref: '#definitions/not-found'
+      "422":
+        $ref: '#definitions/validations'
