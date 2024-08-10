@@ -3,6 +3,7 @@ import PostgresAdapter from "./core/database/pg-adapter.js";
 import Routing from "./core/routes.js";
 import Server from "./core/server.js";
 import SwaggerDoc from "./core/swagger.js";
+import { models } from "./modules/_models/_index.js";
 
 const APP_PORT = process.env.APP_PORT || 7000;
 
@@ -16,7 +17,7 @@ new Server(APP_PORT, [
             query: { raw: true, nest: true },
             sync: { alter: true }
         })
-    ).registerModels([]),
+    ).registerModels(models),
     new Routing([]),
     new SwaggerDoc(
         {

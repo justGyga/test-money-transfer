@@ -1,6 +1,7 @@
 import { BaseModule } from "../server.js";
 
-let getConnection = () => null;
+// eslint-disable-next-line import/no-mutable-exports
+export let getConnection = () => null;
 
 class PostgresAdapter extends BaseModule {
     constructor(connection) {
