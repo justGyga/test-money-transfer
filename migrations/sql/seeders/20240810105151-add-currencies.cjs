@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const { default: axios } = require("axios");
 const { v4: uuidv4 } = require("uuid");
 
@@ -5,11 +6,11 @@ const { v4: uuidv4 } = require("uuid");
 module.exports = {
     async up(queryInterface, Sequelize) {
         await this.down(queryInterface, Sequelize);
-        const APIResponse = await axios.get("https://api.currencyfreaks.com/v2.0/currency-symbols");
+        const APIResponse = await axios.get(`https://v6.exchangerate-api.com/v6/be871f45949b930264fe39c7/codes`);
         const { data } = APIResponse;
-        const { currencySymbols } = data;
+        const { supported_codes } = data;
         const bulkCurrencies = [];
-        Object.keys(currencySymbols).forEach((code) => bulkCurrencies.push({ id: uuidv4(), code, name: currencySymbols[code] }));
+        supported_codes.forEach(([code, name]) => bulkCurrencies.push({ id: uuidv4(), code, name }));
         await queryInterface.bulkInsert("currencies", bulkCurrencies);
     },
 

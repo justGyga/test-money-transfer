@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import PostgresAdapter from "./core/database/pg-adapter.js";
+import RedisAdapter from "./core/database/redis-adapter.js";
 import Routing from "./core/routes.js";
 import Server from "./core/server.js";
 import SwaggerDoc from "./core/swagger.js";
@@ -9,6 +10,12 @@ import { authRouter, userRouter } from "./modules/user/router.js";
 const APP_PORT = process.env.APP_PORT || 7000;
 
 new Server(APP_PORT, [
+    new RedisAdapter({
+        host: process.env.R_HOST || "127.0.0.1",
+        port: process.env.R_PORT || 6379,
+        db: process.env.R_DB || 0,
+        lazyConnect: true
+    }),
     new PostgresAdapter(
         new Sequelize(process.env.DB_NAME, process.env.PG_USER, process.env.PG_PASS, {
             dialect: "postgres",
