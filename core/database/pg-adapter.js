@@ -4,12 +4,18 @@ import { BaseModule } from "../server.js";
 export let getConnection = () => null;
 
 class PostgresAdapter extends BaseModule {
+    /**
+     * @param {Sequelize} connection
+     */
     constructor(connection) {
         super();
         this.connection = connection;
         this.models = [];
     }
 
+    /**
+     * @param {Array<Model>} models
+     */
     registerModels(models = []) {
         this.models = models;
         return this;

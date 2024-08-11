@@ -8,11 +8,7 @@ export let redis = () => null;
 class RedisAdapter extends BaseModule {
     #connection;
     /**
-     * @param {Object} connection
-     * @param {string} connection.host
-     * @param {number} connection.port
-     * @param {number} connection.db
-     * @param {bool} connection.lazyConnect
+     * @param {{host: string, port: number, db: number, lazyConnect: boolean}} connection
      */
     constructor(connection) {
         super();
