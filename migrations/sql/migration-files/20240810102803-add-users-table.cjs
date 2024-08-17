@@ -17,10 +17,10 @@ module.exports = {
                 allowNull: false
             },
             currencyId: {
-                type: Sequelize.DataTypes.UUID,
+                type: Sequelize.DataTypes.STRING,
                 references: {
                     model: "currencies",
-                    key: "id"
+                    key: "code"
                 },
                 onDelete: "SET NULL"
             },

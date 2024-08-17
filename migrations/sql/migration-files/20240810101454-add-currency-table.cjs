@@ -2,16 +2,12 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable("currencies", {
-            id: {
-                type: Sequelize.DataTypes.UUID,
-                defaultValue: Sequelize.DataTypes.UUIDV4,
+            code: {
+                type: Sequelize.DataTypes.STRING,
+                allowNull: false,
                 primaryKey: true
             },
             name: {
-                type: Sequelize.DataTypes.STRING,
-                allowNull: false
-            },
-            code: {
                 type: Sequelize.DataTypes.STRING,
                 allowNull: false
             }
