@@ -6,16 +6,12 @@ export class Currency extends Model {}
 export const currencyPlotter = (connection) => {
     Currency.init(
         {
-            id: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
-                primaryKey: true
-            },
-            name: {
+            code: {
                 type: DataTypes.STRING,
+                primaryKey: true,
                 allowNull: false
             },
-            code: {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false
             }

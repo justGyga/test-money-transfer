@@ -10,7 +10,7 @@ class UserService {
             return [false, false];
         }
         doc.password = await argon2.hash(doc.password);
-        const isCurrencyExists = await Currency.count({ where: { id: doc.currencyId } });
+        const isCurrencyExists = await Currency.count({ where: { code: doc.currencyId } });
         if (!isCurrencyExists) return [true, false];
         await User.create(doc);
         return [true, true];
