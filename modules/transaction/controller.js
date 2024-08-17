@@ -19,8 +19,9 @@ class TransactionController {
         const { to, amount } = req.body;
         const from = req.user.id;
 
-        const { notFound, convertError, transaction } = await this.#service.createTransaction(from, to, amount);
+        const { notFound, forbidden, convertError, transaction } = await this.#service.createTransaction(from, to, amount);
         if (notFound) return res.status(404).json({ message: "Users not found" });
+        if (forbidden) return res.status(404).json({ message: "Your balance is less than required" });
         if (convertError) return res.status(423).json({ message: "Currency rate is not in system" });
 
         res.status(201).json(transaction);

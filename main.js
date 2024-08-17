@@ -5,6 +5,8 @@ import Routing from "./core/routes.js";
 import Server from "./core/server.js";
 import SwaggerDoc from "./core/swagger.js";
 import { models } from "./modules/_models/_index.js";
+import currencyRouter from "./modules/currency/router.js";
+import transactionRouter from "./modules/transaction/router.js";
 import { authRouter, userRouter } from "./modules/user/router.js";
 
 const APP_PORT = process.env.APP_PORT || 7000;
@@ -28,7 +30,9 @@ new Server(APP_PORT, [
     ).registerModels(models),
     new Routing([
         { prefix: "/user", router: userRouter },
-        { prefix: "/sign", router: authRouter }
+        { prefix: "/sign", router: authRouter },
+        { prefix: "/transaction", router: transactionRouter },
+        { prefix: "/currency", router: currencyRouter }
     ]),
     new SwaggerDoc(
         {

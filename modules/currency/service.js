@@ -14,15 +14,14 @@ class CurrencyService {
             await redis.set(`${NON_CONVERT}:user:${userId}`, JSON.stringify({ amount, base, target }), "EX", process.env.CONVERT_TTL);
             return false;
         }
-        const { conversation_rate: rate } = data;
+        const { conversion_rate: rate } = data;
         return amount * rate;
     }
 
     async getRatesByOwnCurrency(userCurrency, targets = []) {
-        const base = userCurrency.code;
         const targetsCodes = (await Currency.findAll({ where: { code: targets }, attributes: ["code"] })).map(({ code }) => code);
         if (!targetsCodes.length) return [false, false];
-        const APIstring = `${process.env.CURRENCY_API_HOST}/${process.env.CURRENCY_API_KEY}/latest/${base}`;
+        const APIstring = `${process.env.CURRENCY_API_HOST}/${process.env.CURRENCY_API_KEY}/latest/${userCurrency}`;
         const response = await axios.get(APIstring);
         const { data } = response;
         if (data.result != "success") return [true, false];

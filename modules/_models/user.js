@@ -20,6 +20,10 @@ export const userPlotter = (connection) => {
             password: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            balance: {
+                type: DataTypes.FLOAT,
+                defaultValue: 0
             }
         },
         {
