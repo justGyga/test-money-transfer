@@ -12,6 +12,7 @@ class CurrencyService {
         const { data } = response;
         if (data.result != "success") {
             await redis.set(`${NON_CONVERT}:user:${userId}`, JSON.stringify({ amount, base, target }), "EX", process.env.CONVERT_TTL);
+            return false;
         }
         const { conversation_rate: rate } = data;
         return amount * rate;
@@ -24,13 +25,13 @@ class CurrencyService {
         const APIstring = `${process.env.CURRENCY_API_HOST}/${process.env.CURRENCY_API_KEY}/latest/${base}`;
         const response = await axios.get(APIstring);
         const { data } = response;
-        if (data.result != "success") return [false, false];
+        if (data.result != "success") return [true, false];
         const { conversion_rates: rates } = data;
         const resultRates = {};
         targetsCodes.forEach((code) => {
             resultRates[code] = rates[code];
         });
-        return resultRates;
+        return [true, resultRates];
     }
 }
 export default CurrencyService;
