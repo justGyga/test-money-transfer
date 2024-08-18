@@ -1,4 +1,5 @@
 import autoBind from "auto-bind";
+import TelegramService from "../bot/service.js";
 import TransactionService from "./service.js";
 
 class TransactionController {
@@ -24,7 +25,9 @@ class TransactionController {
         if (forbidden) return res.status(404).json({ message: "Your balance is less than required" });
         if (convertError) return res.status(423).json({ message: "Currency rate is not in system" });
 
-        res.status(201).json(transaction);
+        const { transaction: tr, ...extra } = transaction;
+        res.status(201).json(tr);
+        TelegramService.sendTransactionToUsers(extra);
     }
 }
 

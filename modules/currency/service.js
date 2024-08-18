@@ -18,6 +18,15 @@ class CurrencyService {
         return amount * rate;
     }
 
+    static async getRatesForTg() {
+        const APIstring = `${process.env.CURRENCY_API_HOST}/${process.env.CURRENCY_API_KEY}/latest/USD`;
+        const response = await axios.get(APIstring);
+        const { data } = response;
+        if (data.result != "success") return false;
+        const { conversion_rates: rates } = data;
+        return rates;
+    }
+
     async getRatesByOwnCurrency(userCurrency, targets = []) {
         const targetsCodes = (await Currency.findAll({ where: { code: targets }, attributes: ["code"] })).map(({ code }) => code);
         if (!targetsCodes.length) return [false, false];

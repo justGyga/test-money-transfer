@@ -37,26 +37,28 @@ class TransactionService {
             await User.update({ balance: target.balance + targetAmount }, { where: { id: target.id } }, { transaction });
             await transaction.commit();
         } catch (error) {
+            console.error(`${new Date()} | Transaction create error:`);
+            console.error(error);
             await transaction.rollback();
             tr = false;
         }
         return tr;
     }
 
-    async createTransaction(from, to, amount) {
-        let transaction;
+    async createTransaction(from, to, ownerAmount) {
+        let targetAmount = ownerAmount;
         const owner = await User.findByPk(from);
         const target = await User.findByPk(to);
         if (!owner || !target) return { notFound: true };
-        if (owner.balance < amount) return { forbidden: true };
+        if (owner.balance < ownerAmount) return { forbidden: true };
 
-        if (target.currencyId == owner.currencyId) transaction = this.#makeTransaction(owner, target, amount, amount);
-        else {
-            const convertedAmount = await CurrencyService.convertMoney(amount, owner.currencyId, target.currencyId, owner.id);
-            if (!convertedAmount) return { convertError: true };
-            transaction = await this.#makeTransaction(owner, target, amount, convertedAmount);
+        if (target.currencyId != owner.currencyId) {
+            targetAmount = await CurrencyService.convertMoney(ownerAmount, owner.currencyId, target.currencyId, owner.id);
+            if (!targetAmount) return { convertError: true };
         }
-        return { transaction };
+
+        const transaction = await this.#makeTransaction(owner, target, ownerAmount, targetAmount);
+        return { transaction: { owner, target, ownerAmount, targetAmount, transaction } };
     }
 }
 

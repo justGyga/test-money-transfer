@@ -5,7 +5,6 @@ export let telegramConnection = () => null;
 
 export default class TelegramBot extends BaseModule {
     #bot;
-    #commands;
 
     /**
      * @param {Bot} bot

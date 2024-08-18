@@ -1,4 +1,5 @@
 import autoBind from "auto-bind";
+import CurrencyService from "../currency/service.js";
 import TelegramService from "./service.js";
 
 class TelegramBotController {
@@ -9,11 +10,11 @@ class TelegramBotController {
     }
 
     async startHandler(context) {
-        const telegramId = context.message.from.id;
+        const { chat } = context.message;
         const userId = context.message.text.split(" ")[1];
         if (!userId) return context.reply("Can not get user id");
         try {
-            const { notFound, alreadyAttachedToAnother, alreadyConnected, success } = await this.#service.registerUser(telegramId, userId);
+            const { notFound, alreadyAttachedToAnother, alreadyConnected, success } = await this.#service.registerUser(chat, userId);
             if (!success) {
                 if (notFound) return context.reply(`Error while attaching: User not found`);
                 if (alreadyAttachedToAnother) return context.reply(`Error while attaching: User already attached to bot with another id`);
@@ -24,6 +25,12 @@ class TelegramBotController {
             console.log(error);
             return context.reply("Ooops... Something went wrong...");
         }
+    }
+
+    async getCurrencies(context) {
+        const rawCurrencies = await CurrencyService.getRatesForTg();
+        const currencies = this.#service.makeBeautifulCurrencyString(rawCurrencies);
+        context.reply(`<b>Code Rate:</b>\n${currencies}`, { parse_mode: "HTML" });
     }
 }
 
