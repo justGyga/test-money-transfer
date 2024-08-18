@@ -1,5 +1,5 @@
 /user/{id}:
-  post:
+  get:
     tags:
       - User
     security: [ ]

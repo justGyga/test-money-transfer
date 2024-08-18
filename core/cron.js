@@ -10,6 +10,6 @@ export default class Scheduler extends BaseModule {
 
     async handler() {
         this.#jobs.forEach(({ time, job }) => new CronJob(time, job).start());
-        console.log("Scheduler is running");
+        console.log("[Cron] Scheduler is running");
     }
 }

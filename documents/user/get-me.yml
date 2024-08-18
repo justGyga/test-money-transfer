@@ -1,5 +1,5 @@
 /user/me:
-  post:
+  get:
     tags:
       - User
     summary: Get user self data

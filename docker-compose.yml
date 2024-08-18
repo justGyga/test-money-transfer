@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+    sql:
+        image: postgres:15-alpine
+        container_name: test-sql
+        restart: unless-stopped
+        environment:
+          POSTGRES_USER: ${PG_USER}
+          POSTGRES_PASSWORD: ${PG_PASS}
+          POSTGRES_DB: ${DB_NAME}
+        ports:
+            - ${PG_PORT}:5432
+        networks:
+            - test-net
+
+    redis:
+        image: redis:7-alpine
+        container_name: test-redis
+        restart: unless-stopped
+        ports:
+            - 6379:6379
+        networks:
+            - test-net
+
+    backend:
+        container_name: test-back
+        build:
+            context: .
+            dockerfile: DockerFile
+        env_file:
+            - .env
+        command: sh -c "npm run migrate:up && npm run start"
+        restart: always
+        ports:
+            - ${APP_PORT}:7000
+        networks:
+            - test-net
+        depends_on:
+            - redis
+            - sql
+
+networks:
+    test-net:
+        driver: bridge

@@ -15,7 +15,7 @@ import { authRouter, userRouter } from "./modules/user/router.js";
 
 const APP_PORT = process.env.APP_PORT || 7000;
 
-new Server(APP_PORT, [
+const serverObj = new Server(APP_PORT, [
     new PostgresAdapter(
         new Sequelize(process.env.DB_NAME, process.env.PG_USER, process.env.PG_PASS, {
             dialect: "postgres",
@@ -68,3 +68,5 @@ new Server(APP_PORT, [
 ])
     .initServices()
     .then((server) => server.run(() => console.log("Server started on port %s", APP_PORT)));
+
+export default serverObj;
