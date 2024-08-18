@@ -41,6 +41,7 @@ This system is implemented as a money transfer service.
     - [x] Get rates
     - [x] Send transaction aggregation for hour
 - [ ] Tests
+
 Unfortunately I was not able to implement the testing due to my inexperience.
 
 # Commands
