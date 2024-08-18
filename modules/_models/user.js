@@ -24,7 +24,8 @@ export const userPlotter = (connection) => {
             balance: {
                 type: DataTypes.FLOAT,
                 defaultValue: 0
-            }
+            },
+            telegramId: DataTypes.INTEGER
         },
         {
             sequelize: connection,

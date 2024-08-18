@@ -4,7 +4,9 @@ import RedisAdapter from "./core/database/redis-adapter.js";
 import Routing from "./core/routes.js";
 import Server from "./core/server.js";
 import SwaggerDoc from "./core/swagger.js";
+import TelegramBot from "./core/telegram.js";
 import { models } from "./modules/_models/_index.js";
+import teleBot from "./modules/bot/router.js";
 import currencyRouter from "./modules/currency/router.js";
 import transactionRouter from "./modules/transaction/router.js";
 import { authRouter, userRouter } from "./modules/user/router.js";
@@ -12,6 +14,7 @@ import { authRouter, userRouter } from "./modules/user/router.js";
 const APP_PORT = process.env.APP_PORT || 7000;
 
 new Server(APP_PORT, [
+    new TelegramBot(teleBot),
     new RedisAdapter({
         host: process.env.R_HOST || "127.0.0.1",
         port: process.env.R_PORT || 6379,

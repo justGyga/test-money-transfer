@@ -8,6 +8,13 @@ class UserController {
         this.#service = new UserService();
     }
 
+    async attachToTelegram(req, res) {
+        const userId = req.user.id;
+        const url = `${process.env.TELEGRAM_BOT_LINK}?start=${userId}`;
+        console.log(url);
+        res.redirect(url);
+    }
+
     async signUp(req, res) {
         try {
             const [isLoginTaken, isCurrencyExists] = await this.#service.registration(req.body);

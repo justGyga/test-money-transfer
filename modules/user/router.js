@@ -13,6 +13,7 @@ const authRouter = new Router();
 authRouter.post("/in", Validator.validate(SignInDto), Controller.signIn);
 authRouter.post("/up", Validator.validate(SignUpDto), Controller.signUp);
 
+userRouter.put("/attach-tg", TokenGuard.verify, Controller.attachToTelegram);
 userRouter.get("", Validator.validate(listDto, CONTEXT.QUERY), Controller.getList);
 userRouter.get("/me", TokenGuard.verify, Controller.getMe);
 userRouter.get("/:id", Validator.validate(uuidDto, CONTEXT.PATH), Controller.getById);
