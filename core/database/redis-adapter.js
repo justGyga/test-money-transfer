@@ -15,7 +15,7 @@ class RedisAdapter extends BaseModule {
         this.#connection = connection;
     }
 
-    async handler(_) {
+    async handler() {
         try {
             redis = () => new Redis(this.#connection);
             await redis().connect();

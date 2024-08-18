@@ -31,7 +31,7 @@ class PostgresAdapter extends BaseModule {
         keySetter.forEach((exec) => exec && exec(this.connection));
     }
 
-    async beforeHandler(_) {
+    async beforeHandler() {
         try {
             await this.#isConnect();
             console.log("[Sequelize] Connection to database is established");
@@ -42,11 +42,11 @@ class PostgresAdapter extends BaseModule {
         }
     }
 
-    async handler(_) {
+    async handler() {
         getConnection = () => this.connection;
     }
 
-    async afterHandler(_) {
+    async afterHandler() {
         await this.#initModels();
         console.log("[Sequelize] Models loaded");
     }

@@ -11,7 +11,7 @@ class TelegramBotController {
 
     async startHandler(context) {
         const { chat } = context.message;
-        const userId = context.message.text.split(" ")[1];
+        const userId = context.match;
         if (!userId) return context.reply("Can not get user id");
         try {
             const { notFound, alreadyAttachedToAnother, alreadyConnected, success } = await this.#service.registerUser(chat, userId);
